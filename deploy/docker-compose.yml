@@ -1,0 +1,143 @@
+version: '3'
+services:
+  #### mysql ####
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    restart: always
+    ports:
+      - "3306:3306"
+    volumes:
+      - /usr/local/volumes/mysql/data:/var/lib/mysql
+    environment:
+      - TZ=Asia/Shanghai
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_DATABASE=go-layout
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
+  #### redis ####
+  redis:
+    image: redis:7.0.0
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes --requirepass "123456"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro # 设置容器时区与宿主机保持一致
+      - /usr/local/volumes/redis/redis.conf:/etc/redis.conf
+      - /usr/local/volumes/redis/data:/data
+    environment:
+      - TZ=Asia/Shanghai
+  #### jaeger ####
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    container_name: jaeger
+    restart: always
+    ports:
+      - "5775:5775/udp"
+      - "6831:6831/udp"
+      - "6832:6832/udp"
+      - "5778:5778"
+      - "14268:14268"
+      - "9411:9411"
+      - "16686:16686"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - TZ=Asia/Shanghai
+      - COLLECTOR_ZIPKIN_HTTP_PORT=9411
+  #### prometheus ####
+  prometheus:
+    image: bitnami/prometheus
+    container_name: prometheus
+    restart: always
+    ports:
+      - "9090:9090"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /usr/local/volumes/prometheus/prometheus.yml:/opt/bitnami/prometheus/conf/prometheus.yml
+    environment:
+      - TZ=Asia/Shanghai
+  #### grafana ####
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    restart: always
+    ports:
+      - "3000:3000"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /usr/local/volumes/grafana/data:/opt/bitnami/grafana/data
+    # - /usr/local/volumes/grafana/grafana.ini:/opt/bitnami/grafana/conf/grafana.ini //告警邮件配置
+    environment:
+      - TZ=Asia/Shanghai
+    depends_on:
+      - prometheus
+  #### zookeeper ####
+  zookeeper:
+    image: 'bitnami/zookeeper:latest'
+    container_name: zookeeper
+    restart: always
+    ports:
+      - "2181:2181"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - TZ=Asia/Shanghai
+      - ALLOW_ANONYMOUS_LOGIN=yes
+  #### kafka ####
+  kafka:
+    image: 'bitnami/kafka:latest'
+    container_name: kafka
+    restart: always
+    user: root
+    ports:
+      - '9092:9092'
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /usr/local/volumes/kafka/data:/bitnami/kafka
+    environment:
+      - TZ=Asia/Shanghai
+      - KAFKA_BROKER_ID=1
+      - KAFKA_LISTENERS=PLAINTEXT://:9092
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://172.12.0.2:9092
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+    depends_on:
+      - zookeeper
+    #### elasticsearch ####
+    # 增加安全认证：在配置文件挂在或者容器内的elasticsearch.yml添加：
+    # xpack.security.enabled: true
+    # xpack.license.self_generated.type: basic
+    # xpack.security.transport.ssl.enabled: true
+    # 在bin/elasticsearch-setup-passwords interactive 回车输入y，填写密码，重启容器
+  elasticsearch:
+    image: elasticsearch:7.17.0
+    container_name: elasticsearch
+    restart: always
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /usr/local/volumes/elasticsearch/data:/usr/share/elasticsearch/data #数据文件挂载
+      - /usr/local/volumes/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml #配置文件挂载
+    environment:
+      - TZ=Asia/Shanghai
+      - discovery.type=single-node #以单一节点模式启动
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m" #设置使用jvm内存大小
+
+  #### kibana ####
+  kibana:
+    image: kibana:7.17.0
+    container_name: kibana
+    restart: always
+    ports:
+      - "5601:5601"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /usr/local/volumes/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
+    environment:
+      - elasticsearch.hosts=http://172.12.0.2:9200
+    depends_on:
+      - elasticsearch

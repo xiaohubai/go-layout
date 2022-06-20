@@ -1,0 +1,20 @@
+CREATE TABLE `tb_casbin_rule` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  `ptype` varchar(100) DEFAULT NULL,
+  `v0` varchar(100) DEFAULT NULL,
+  `v1` varchar(100) DEFAULT NULL,
+  `v2` varchar(100) DEFAULT NULL,
+  `v3` varchar(100) DEFAULT NULL,
+  `v4` varchar(100) DEFAULT NULL,
+  `v5` varchar(100) DEFAULT NULL,
+  `v6` varchar(25) DEFAULT NULL,
+  `v7` varchar(25) DEFAULT NULL,
+  `create_user` varchar(191) NOT NULL,
+  `update_user` varchar(191) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_tb_casbin_rule` (`ptype`,`v0`,`v1`,`v2`,`v3`,`v4`,`v5`,`v6`,`v7`),
+  KEY `idx_tb_casbin_rule_deleted_at` (`deleted_at`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
