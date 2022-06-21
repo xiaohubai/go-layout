@@ -17,7 +17,7 @@ zap:
 
 redis:
   db: 0
-  addr: '172.12.0.2:6379'
+  addr: '172.21.0.2:6379'
   password: '123456'
 
 email:
@@ -35,7 +35,7 @@ casbin:
 
 jaeger:
   name: 'go-layout'
-  host: '172.12.0.2:6831'
+  host: '172.21.0.2:6831'
 
 system:
   name: 'go-layout'
@@ -51,7 +51,7 @@ captcha:
 
 
 mysql:
-  path: '172.12.0.2:3306'
+  path: '172.21.0.2:3306'
   config: 'charset=utf8mb4&parseTime=True&loc=Local'
   db-name: 'go-layout'
   username: 'root'
@@ -62,11 +62,11 @@ mysql:
   log-zap: true
 
 kafka:
-  address: '172.12.0.2:9092'
+  address: '172.21.0.2:9092'
   logTopic: 'my_log'
 
 
 es:
-  path: 'http://172.12.0.2:9200'
+  path: 'http://172.21.0.2:9200'
   username: 'elastic'
   password: '1qaz!QAZ'

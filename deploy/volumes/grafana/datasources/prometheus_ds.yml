@@ -2,5 +2,5 @@ datasources:
 - name: Prometheus
   access: proxy
   type: prometheus
-  url: http://172.12.0.2:9090
+  url: http://172.21.0.2:9090
   isDefault: true
