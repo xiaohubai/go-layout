@@ -100,7 +100,7 @@ services:
       - TZ=Asia/Shanghai
       - KAFKA_BROKER_ID=1
       - KAFKA_LISTENERS=PLAINTEXT://:9092
-      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://172.12.0.2:9092
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://172.21.0.2:9092
       - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
       - ALLOW_PLAINTEXT_LISTENER=yes
     depends_on:
@@ -138,6 +138,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /usr/local/volumes/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
     environment:
-      - elasticsearch.hosts=http://172.12.0.2:9200
+      - elasticsearch.hosts=http://172.21.0.2:9200
     depends_on:
       - elasticsearch
