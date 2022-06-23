@@ -32,6 +32,9 @@ const (
 	CasbinUpdateFail  = 4012 // 权限更新失败
 	CasbinListFail    = 4013 // 权限列表失败
 	ErrRateLimited    = 4014 // 超出请求频率限制
+	ErrFileWithExcel  = 4015 // 文件不是excel
+	ErrFileReport     = 4016 // 文件上传失败
+	ErrFileOpen       = 4017 // 文件打开失败
 )
 
 var codeMsg = map[int]string{
@@ -51,6 +54,9 @@ var codeMsg = map[int]string{
 	CasbinUpdateFail:  "权限更新失败",
 	CasbinListFail:    "权限列表失败",
 	ErrRateLimited:    "超出请求频率限制",
+	ErrFileWithExcel:  "不是excel文件",
+	ErrFileReport:     "文件上传失败",
+	ErrFileOpen:       "文件打开失败",
 }
 
 func Result(c *gin.Context, code int, data, msg interface{}) {

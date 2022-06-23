@@ -21,6 +21,7 @@ func JWTAuth() gin.HandlerFunc {
 		claims, err := jwt.ParseToken(token)
 		if err != nil {
 			if err == consts.TokenExpired {
+				response.Fail(c, response.TokenExpired, nil)
 				c.Abort()
 				return
 			}
