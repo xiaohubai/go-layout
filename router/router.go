@@ -11,7 +11,7 @@ import (
 func Routers() *gin.Engine {
 	var router = gin.Default()
 
-	router.Use(m.Cors(), m.Tracing(), m.Translations(), m.Metrics())
+	router.Use(m.Cors(), m.Tracing(), m.Translations(), m.Metrics(), m.Recovery())
 	r0 := router.Group("")
 	{
 		r0.GET("/metrics", gin.WrapH(promhttp.Handler()))

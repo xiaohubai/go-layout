@@ -28,8 +28,8 @@ var (
 )
 
 var (
-	Producer sarama.SyncProducer
-	Consumer sarama.Consumer
+	KafkaProducer sarama.SyncProducer
+	KafkaConsumer sarama.Consumer
 )
 
 var (

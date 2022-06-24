@@ -54,3 +54,7 @@ const (
 	November  = 11
 	December  = 12
 )
+
+var (
+	TopicOfWarn = "warn"
+)

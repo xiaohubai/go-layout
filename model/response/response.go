@@ -1,7 +1,6 @@
 package response
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 
@@ -17,7 +16,7 @@ type Resp struct {
 
 const (
 	CommonOK          = 0    // 成功
-	CommonFail        = 4000 // 系统内部错误,未知失败
+	CommonFail        = 4000 // 系统内部错误
 	CaptchaFail       = 4001 // 验证码获取失败
 	ParamsFail        = 4002 // 参数校验错误
 	LoginFail         = 4003 // 登录失败
@@ -39,7 +38,7 @@ const (
 
 var codeMsg = map[int]string{
 	CommonOK:          "成功",
-	CommonFail:        "系统内部错误，请稍后再试",
+	CommonFail:        "系统内部错误",
 	CaptchaFail:       "验证码获取失败",
 	ParamsFail:        "参数校验错误",
 	TokenFail:         "获取token失败",
@@ -73,19 +72,17 @@ func Result(c *gin.Context, code int, data, msg interface{}) {
 	if e, ok := msg.(error); ok {
 		resp.Msg = fmt.Sprintf("%s：%s", resp.Msg, e.Error())
 	}
-	respBody, _ := json.Marshal(resp)
-	c.Set("resp_body", string(respBody))
 	c.JSON(http.StatusOK, resp)
 }
 
 func Ok(c *gin.Context, data interface{}) {
 	if data == nil {
-		data = make(map[string]struct{})
+		data = make(map[string]string, 0)
 	}
 	Result(c, CommonOK, data, "")
 }
 
 func Fail(c *gin.Context, code int, err interface{}) {
-	data := make(map[string]struct{})
+	data := make(map[string]string, 0)
 	Result(c, code, data, err)
 }

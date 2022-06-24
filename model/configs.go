@@ -23,8 +23,8 @@ type Es struct {
 	Path string `mapstructure:"path" json:"path" yaml:"path"`
 }
 type Kafka struct {
-	Address  []string `mapstructure:"address" json:"address" yaml:"address"`    // 地址
-	LogTopic string   `mapstructure:"logTopic" json:"logTopic" yaml:"logTopic"` // 地址
+	Address []string `mapstructure:"address" json:"address" yaml:"address"` // 地址
+	Topics  string   `mapstructure:"topics" json:"topics" yaml:"topics"`    // topics
 }
 
 type JWT struct {

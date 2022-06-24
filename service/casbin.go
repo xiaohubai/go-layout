@@ -41,10 +41,10 @@ func AddCasbinWithExcel(c *gin.Context, file io.Reader) error {
 	for _, row := range rows {
 		if row[0] != "" && row[1] != "" && row[2] != "" {
 			data := model.CasbinRule{
-				Ptype: "p",
-				V0:    row[0],
-				V1:    row[1],
-				V2:    strings.ToUpper(row[2]),
+				//	Ptype: "p",
+				V0: row[0],
+				V1: row[1],
+				V2: strings.ToUpper(row[2]),
 			}
 			casbins = append(casbins, data)
 		}
