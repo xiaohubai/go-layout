@@ -51,3 +51,6 @@
 - 拷贝volumes文件到/usr/local/
 - 增加内网ip：172.12.0.2
 - 执行 make compose
+
+#TODO
+1.新增rpc服务，获取kafka消息，topic告警发邮件

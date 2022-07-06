@@ -30,6 +30,7 @@ func Routers() *gin.Engine {
 		r2.POST("/getUserInfo", v1.UserInfo)
 		r2.POST("/add/casbin", v1.AddCasbin)
 		r2.POST("/add/casbinWithExcel", v1.AddCasbinWithExcel)
+		r2.POST("/get/dict", v1.GetDict)
 	}
 
 	return router
