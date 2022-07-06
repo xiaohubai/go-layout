@@ -28,9 +28,11 @@ func Routers() *gin.Engine {
 	r2 := router.Group("v1").Use(m.JWTAuth(), m.Casbin())
 	{
 		r2.POST("/getUserInfo", v1.UserInfo)
-		r2.POST("/add/casbin", v1.AddCasbin)
-		r2.POST("/add/casbinWithExcel", v1.AddCasbinWithExcel)
-		r2.POST("/get/dict", v1.GetDict)
+		r2.POST("/addCasbin", v1.AddCasbin)
+		r2.POST("/addCasbinWithExcel", v1.AddCasbinWithExcel)
+		r2.POST("/getDict", v1.GetDict)
+		r2.POST("/upload", v1.GetDict)   //用户拼接
+		r2.POST("/download", v1.GetDict) //用户拼接
 	}
 
 	return router
