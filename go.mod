@@ -14,7 +14,6 @@ require (
 	github.com/go-playground/locales v0.14.0
 	github.com/go-playground/universal-translator v0.18.0
 	github.com/go-playground/validator/v10 v10.11.0
-	github.com/go-redis/redis v6.15.9+incompatible
 	github.com/go-redis/redis/v8 v8.11.4
 	github.com/go-redis/redis_rate/v9 v9.1.2
 	github.com/golang-jwt/jwt v3.2.2+incompatible
@@ -27,7 +26,6 @@ require (
 	github.com/opentracing/opentracing-go v1.2.0
 	github.com/panjf2000/ants/v2 v2.5.0
 	github.com/prometheus/client_golang v1.12.1
-	github.com/spf13/cast v1.5.0
 	github.com/spf13/viper v1.12.0
 	github.com/uber/jaeger-client-go v2.30.0+incompatible
 	github.com/xiaohubai/rpc_layout v1.0.0
@@ -114,6 +112,7 @@ require (
 	github.com/richardlehane/mscfb v1.0.4 // indirect
 	github.com/richardlehane/msoleps v1.0.1 // indirect
 	github.com/spf13/afero v1.8.2 // indirect
+	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/subosito/gotenv v1.3.0 // indirect

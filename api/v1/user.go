@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/gin-gonic/gin"
-	"github.com/spf13/cast"
 	"go.uber.org/zap"
 
 	"github.com/xiaohubai/go-layout/configs/global"
@@ -25,7 +24,7 @@ func Register(c *gin.Context) {
 		Username: r.Username,
 		Password: r.Password,
 		Phone:    r.Phone,
-		RoleId:   cast.ToString(r.RoleId),
+		RoleId:   r.RoleId,
 		RoleName: r.RoleName,
 		Birth:    utils.StrToTime(r.Birth, "2006-01-02"),
 	}
@@ -34,6 +33,7 @@ func Register(c *gin.Context) {
 	if err != nil {
 		global.Log.Error(utils.TraceId(c), zap.Any("key", "func"), zap.Any("msg", fmt.Sprintf("%s:%s", "注册失败", err)))
 		response.Fail(c, response.RegisterFail, err)
+		return
 	}
 	response.Ok(c, nil)
 }

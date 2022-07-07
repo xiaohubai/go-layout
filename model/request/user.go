@@ -4,7 +4,7 @@ type Register struct {
 	Username string `json:"username"  binding:"required,min=1"`           // 用户名
 	Password string `json:"password"  binding:"required,min=6,max=20"`    // 密码
 	Phone    string `json:"phone" binding:"required,len=11"`              // 手机号
-	RoleId   int    `json:"role_id" binding:"required,min=1,max=1"`       // 角色：0 管理员，1 正常用户，只能输入1
+	RoleId   string `json:"role_id" binding:"required,oneof='1' '2'"`     // 角色：0 管理员，1 正常用户，只能输入1
 	RoleName string `json:"role_name" binding:"required"`                 // 角色名称
 	Birth    string `json:"birth" binding:"required,datetime=2006-01-02"` // 出生日期
 }

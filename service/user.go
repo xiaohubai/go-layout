@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/go-redis/redis"
+	"github.com/go-redis/redis/v8"
 	"github.com/xiaohubai/go-layout/dao"
 	"github.com/xiaohubai/go-layout/model"
 	"github.com/xiaohubai/go-layout/model/response"
@@ -95,17 +95,20 @@ func Register(c *gin.Context, u *model.User) (err error) {
 	if err != nil {
 		return fmt.Errorf("系统内部错误")
 	}
-	if count != 0 {
+	if count >= 1 {
 		return fmt.Errorf("用户名已存在")
 	}
-	if err = predis.Set(c.Request.Context(), u.Username, "1", 5*time.Second); err != nil {
+	if err := predis.Set(c.Request.Context(), u.Username, "1", 5*time.Minute); err != nil {
 		return fmt.Errorf("系统内部错误")
 	}
 
 	u.CreatedUser = u.Username
 	u.UpdatedUser = u.Username
-	u.Uid = utils.UUID()
-	u.Salt = utils.RandString(6)
+	u.Uid = utils.TraceId(c)
+	u.Salt = utils.RandString(7)
+	u.Avatar = "avatar.jpg"
+	u.Nick = "hi"
+	u.State = "1"
 	u.Password = utils.Md5([]byte(u.Password + u.Salt))
 
 	err = dao.CreateOneUser(c, []model.User{*u})
