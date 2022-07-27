@@ -10,11 +10,11 @@ import (
 func SelectUser(c *gin.Context, u *model.User) (user []model.User, count int64, err error) {
 	db := GetDB(c, "mysql").(*gorm.DB)
 	db = db.Model(model.User{})
-	if len(u.Uid) != 0 {
-		db = db.Where("uid = ?", u.Uid)
+	if len(u.UID) != 0 {
+		db = db.Where("uid = ?", u.UID)
 	}
-	if len(u.Username) != 0 {
-		db = db.Where("username = ?", u.Username)
+	if len(u.UserName) != 0 {
+		db = db.Where("username = ?", u.UserName)
 	}
 	if len(u.Password) != 0 {
 		db = db.Where("password = ?", u.Password)
@@ -25,8 +25,8 @@ func SelectUser(c *gin.Context, u *model.User) (user []model.User, count int64, 
 	if len(u.State) != 0 {
 		db = db.Where("state = ?", u.State)
 	}
-	if len(u.RoleId) != 0 {
-		db = db.Where("role_id = ?", u.RoleId)
+	if len(u.RoleID) != 0 {
+		db = db.Where("role_id = ?", u.RoleID)
 	}
 	if len(u.RoleName) != 0 {
 		db = db.Where("role_name = ?", u.RoleName)
@@ -40,4 +40,10 @@ func SelectUser(c *gin.Context, u *model.User) (user []model.User, count int64, 
 func CreateOneUser(c *gin.Context, u []model.User) (err error) {
 	db := GetDB(c, "mysql").(*gorm.DB)
 	return db.Create(&u).Error
+}
+
+func UpdateUser(c *gin.Context, u *model.User) error {
+	db := GetDB(c, "mysql").(*gorm.DB)
+	db.Model(model.User{}).Updates(u)
+	return db.Model(model.User{}).Where("uid = ?", u.UID).Updates(u).Error
 }

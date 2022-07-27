@@ -47,6 +47,8 @@
 - 协程控制 （github.com/panjf2000/ants/v2）
 - 分布式接口限流 （github.com/go-redis/redis_rate/v9）
 
+## 注意事项
+1.除数据库字段名使用下划线。其余前端入参，后端返参、业务代码中字段传递使用驼峰命名
 ## 一键搭建环境
 - 拷贝volumes文件到/usr/local/
 - 增加内网ip：172.12.0.2

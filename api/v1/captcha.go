@@ -14,12 +14,7 @@ import (
 
 var store = base64Captcha.DefaultMemStore
 
-// @Summary 生成验证码
-// @Tags Captcha
-// @acept application/json
-// @Produce application/json
-// @Sucess 200 object resp.CaptchaResp "{"code":2000,"data":{},"msg":"登录成功","trace_id":"750859c3-f431-4eb8-b014-0fe34fb8d92a"}"
-// @Router /captcha [get]
+//Captcha 生成验证码
 func Captcha(c *gin.Context) {
 	driver := base64Captcha.NewDriverDigit(global.Cfg.Captcha.ImgHeight, global.Cfg.Captcha.ImgWidth,
 		global.Cfg.Captcha.KeyLong, 0.7, 80)
@@ -28,6 +23,6 @@ func Captcha(c *gin.Context) {
 		global.Log.Error(utils.TraceId(c), zap.Any("key", "func"), zap.Any("msg", fmt.Sprintf("%s:%s", "验证码获取失败", err)))
 		response.Fail(c, response.CaptchaFail, nil)
 	} else {
-		response.Ok(c, response.CaptchaResp{CaptchaId: id, PicPath: b64s})
+		response.Ok(c, response.CaptchaResp{CaptchaID: id, PicPath: b64s, CaptchaLength: global.Cfg.Captcha.KeyLong})
 	}
 }

@@ -11,7 +11,7 @@ type Resp struct {
 	Code    int         `json:"code"`
 	Data    interface{} `json:"data"`
 	Msg     interface{} `json:"msg"`
-	TraceId string      `json:"trace_id"`
+	TraceId string      `json:"traceID"`
 }
 
 const (
@@ -34,6 +34,8 @@ const (
 	ErrFileWithExcel  = 4015 // 文件不是excel
 	ErrFileReport     = 4016 // 文件上传失败
 	ErrFileOpen       = 4017 // 文件打开失败
+	GetUserInfoFaild  = 4018 // 获取用户信息失败
+	SetUserInfoFaild  = 4019 // 更新用户信息失败
 )
 
 var codeMsg = map[int]string{
@@ -56,6 +58,8 @@ var codeMsg = map[int]string{
 	ErrFileWithExcel:  "不是excel文件",
 	ErrFileReport:     "文件上传失败",
 	ErrFileOpen:       "文件打开失败",
+	GetUserInfoFaild:  "获取用户信息失败",
+	SetUserInfoFaild:  "更新用户信息失败",
 }
 
 func Result(c *gin.Context, code int, data, msg interface{}) {

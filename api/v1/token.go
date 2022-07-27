@@ -24,7 +24,7 @@ func Token(c *gin.Context) {
 		response.Fail(c, response.ParamsFail, err)
 		return
 	}
-	u := &model.User{Username: req.Username, Password: req.Password}
+	u := &model.User{UserName: req.UserName, Password: req.Password}
 	resp, err := service.Token(c, u)
 	if err != nil {
 		span.LogFields(log.Object("service.Token(c, u)", u), log.Object("error", err))

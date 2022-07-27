@@ -14,7 +14,7 @@ import (
 )
 
 func Login(c *gin.Context, u *model.User) (result *response.LoginResp, err error) {
-	userInfo, count, err := dao.SelectUser(c, &model.User{Username: u.Username})
+	userInfo, count, err := dao.SelectUser(c, &model.User{UserName: u.UserName})
 	if err != nil {
 		return nil, fmt.Errorf("系统内部错误")
 	}
@@ -27,21 +27,26 @@ func Login(c *gin.Context, u *model.User) (result *response.LoginResp, err error
 	}
 
 	user := response.UserInfoResp{
-		Id:          userInfo[0].Model.ID,
-		Uid:         userInfo[0].Uid,
-		Username:    userInfo[0].Username,
-		Nick:        userInfo[0].Nick,
-		Birth:       utils.TimeToStr(userInfo[0].Birth, "2006-01-02"),
-		Avatar:      userInfo[0].Avatar,
-		RoleId:      userInfo[0].RoleId,
-		RoleName:    userInfo[0].RoleName,
-		Phone:       userInfo[0].Phone,
-		Wechat:      userInfo[0].Wechat,
-		Email:       userInfo[0].Email,
-		CreatedUser: userInfo[0].CreatedUser,
-		UpdatedUser: userInfo[0].UpdatedUser,
-		CreateAt:    utils.TimeToStr(userInfo[0].Model.CreatedAt, "2006-01-02 15:04:05"),
-		UpdateAt:    utils.TimeToStr(userInfo[0].Model.UpdatedAt, "2006-01-02 15:04:05"),
+		ID:            userInfo[0].Model.ID,
+		UID:           userInfo[0].UID,
+		UserName:      userInfo[0].UserName,
+		NickName:      userInfo[0].NickName,
+		Birth:         userInfo[0].Birth,
+		Avatar:        userInfo[0].Avatar,
+		RoleID:        userInfo[0].RoleID,
+		RoleName:      userInfo[0].RoleName,
+		Phone:         userInfo[0].Phone,
+		Wechat:        userInfo[0].Wechat,
+		Email:         userInfo[0].Email,
+		DefaultRouter: userInfo[0].DefaultRouter,
+		State:         userInfo[0].State,
+		SideMode:      userInfo[0].SideMode,
+		BaseColor:     userInfo[0].BaseColor,
+		ActiveColor:   userInfo[0].ActiveColor,
+		CreatedUser:   userInfo[0].CreatedUser,
+		UpdatedUser:   userInfo[0].UpdatedUser,
+		CreateAt:      utils.TimeToStr(userInfo[0].Model.CreatedAt, "2006-01-02 15:04:05"),
+		UpdateAt:      utils.TimeToStr(userInfo[0].Model.UpdatedAt, "2006-01-02 15:04:05"),
 	}
 
 	tokenInfo, err := utils.SetToken(c, &userInfo[0])
@@ -52,45 +57,54 @@ func Login(c *gin.Context, u *model.User) (result *response.LoginResp, err error
 	return resp, err
 }
 
-func UserInfo(c *gin.Context, u *model.User) ([]response.UserInfoResp, error) {
-	userInfos, _, err := dao.SelectUser(c, &model.User{Username: u.Username})
+func UserInfoList(c *gin.Context, u *model.User) ([]response.UserInfoResp, error) {
+	userInfos, _, err := dao.SelectUser(c, u)
 	if err != nil {
 		return nil, fmt.Errorf("系统内部错误")
 	}
 	resp := make([]response.UserInfoResp, 0)
 	for _, v := range userInfos {
 		user := response.UserInfoResp{
-			Id:          v.Model.ID,
-			Uid:         v.Uid,
-			Username:    v.Username,
-			Nick:        v.Nick,
-			Birth:       utils.TimeToStr(v.Birth, "2006-01-02"),
-			Avatar:      v.Avatar,
-			RoleId:      v.RoleId,
-			RoleName:    v.RoleName,
-			Phone:       v.Phone,
-			Wechat:      v.Wechat,
-			Email:       v.Email,
-			CreatedUser: v.CreatedUser,
-			UpdatedUser: v.UpdatedUser,
-			CreateAt:    utils.TimeToStr(v.Model.CreatedAt, "2006-01-02 15:04:05"),
-			UpdateAt:    utils.TimeToStr(v.Model.UpdatedAt, "2006-01-02 15:04:05"),
+			ID:            v.Model.ID,
+			UID:           v.UID,
+			UserName:      v.UserName,
+			NickName:      v.NickName,
+			Birth:         v.Birth,
+			Avatar:        v.Avatar,
+			RoleID:        v.RoleID,
+			RoleName:      v.RoleName,
+			Phone:         v.Phone,
+			Wechat:        v.Wechat,
+			Email:         v.Email,
+			State:         v.State,
+			CreatedUser:   v.CreatedUser,
+			UpdatedUser:   v.UpdatedUser,
+			DefaultRouter: v.DefaultRouter,
+			SideMode:      v.SideMode,
+			BaseColor:     v.BaseColor,
+			ActiveColor:   v.ActiveColor,
+			CreateAt:      utils.TimeToStr(v.Model.CreatedAt, "2006-01-02 15:04:05"),
+			UpdateAt:      utils.TimeToStr(v.Model.UpdatedAt, "2006-01-02 15:04:05"),
 		}
 		resp = append(resp, user)
 	}
-
 	return resp, err
 }
 
+func SetUserInfo(c *gin.Context, u *model.User) error {
+	err := dao.UpdateUser(c, u)
+	fmt.Println(err)
+	return err
+}
 func Register(c *gin.Context, u *model.User) (err error) {
-	if _, err = predis.Get(c.Request.Context(), utils.Md5([]byte(u.Username))); err == nil {
+	if _, err = predis.Get(c.Request.Context(), utils.Md5([]byte(u.UserName))); err == nil {
 		return fmt.Errorf("用户名已存在")
 	}
 	if err != redis.Nil {
 		return fmt.Errorf("系统内部错误")
 	}
 
-	user := &model.User{Username: u.Username}
+	user := &model.User{UserName: u.UserName}
 	_, count, err := dao.SelectUser(c, user)
 	if err != nil {
 		return fmt.Errorf("系统内部错误")
@@ -98,20 +112,20 @@ func Register(c *gin.Context, u *model.User) (err error) {
 	if count >= 1 {
 		return fmt.Errorf("用户名已存在")
 	}
-	if err := predis.Set(c.Request.Context(), u.Username, "1", 5*time.Minute); err != nil {
+	if err := predis.Set(c.Request.Context(), u.UserName, "1", 5*time.Minute); err != nil {
 		return fmt.Errorf("系统内部错误")
 	}
 
-	u.CreatedUser = u.Username
-	u.UpdatedUser = u.Username
-	u.Uid = utils.TraceId(c)
+	u.CreatedUser = u.UserName
+	u.UpdatedUser = u.UserName
+	u.UID = utils.TraceId(c)
 	u.Salt = utils.RandString(7)
 	u.Avatar = "avatar.jpg"
-	u.Nick = "hi"
+	u.NickName = "hi"
 	u.State = "1"
 	u.Password = utils.Md5([]byte(u.Password + u.Salt))
 
 	err = dao.CreateOneUser(c, []model.User{*u})
-	_ = predis.Del(c.Request.Context(), utils.Md5([]byte(u.Username)))
+	_ = predis.Del(c.Request.Context(), utils.Md5([]byte(u.UserName)))
 	return err
 }

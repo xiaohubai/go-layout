@@ -11,7 +11,7 @@ import (
 )
 
 func Token(c *gin.Context, u *model.User) (*response.TokenResp, error) {
-	userInfo, count, err := dao.SelectUser(c, &model.User{Username: u.Username})
+	userInfo, count, err := dao.SelectUser(c, &model.User{UserName: u.UserName})
 	if err != nil {
 		return nil, fmt.Errorf("系统内部错误")
 	}

@@ -1,11 +1,8 @@
 package tables
 
 import (
-	"fmt"
-
 	"github.com/xiaohubai/go-layout/configs/global"
 	"github.com/xiaohubai/go-layout/model"
-	"github.com/xiaohubai/go-layout/utils"
 	"gorm.io/gorm"
 )
 
@@ -16,10 +13,10 @@ func Init() {
 		model.Menu{},
 	)
 	if err != nil {
-		panic(fmt.Errorf("tables register failed: %s \n", err))
+		panic(err)
 	}
 	if err := InitDBData(); err != nil {
-		panic(fmt.Errorf("tables init insert failed: %s \n", err))
+		panic(err)
 	}
 }
 
@@ -47,16 +44,16 @@ func CreateUser() error {
 		user := []model.User{
 			{
 				Model:       gorm.Model{ID: 1},
-				Uid:         utils.UUID(),
-				Username:    "admin",
+				UID:         "092a82778886abb2",
+				UserName:    "admin",
+				NickName:    "walle",
 				Password:    "891588d2b267551e4609e43cd1159c90",
 				Phone:       "13269110806",
-				Birth:       utils.StrToTime("2021-01-01", "2006-01-02"),
+				Birth:       "2021-01-01",
 				State:       "0",
-				RoleId:      "0",
+				RoleID:      "0",
 				Salt:        "B`qw&!",
 				RoleName:    "管理员",
-				Avatar:      "avatar.jpg",
 				CreatedUser: "admin",
 				UpdatedUser: "admin",
 			},
@@ -76,7 +73,7 @@ func CreateMenu() error {
 		menus := []model.Menu{
 			{
 				Model:       gorm.Model{ID: 1},
-				ParentId:    0,
+				ParentID:    0,
 				Path:        "dashboard",
 				Name:        "dashboard",
 				Hidden:      0,

@@ -5,13 +5,13 @@ import (
 )
 
 type Claims struct {
-	Uid        string `json:"uid"`
-	Username   string `json:"username"`
+	UID        string `json:"uid"`
+	UserName   string `json:"userName"`
 	Phone      string `json:"phone"`
-	RoleId     string `json:"role_id"`
-	RoleName   string `json:"role_name"`
+	RoleID     string `json:"roleID"`
+	RoleName   string `json:"roleName"`
 	Birth      string `json:"brith"`
 	State      string `json:"state"`
-	BufferTime int64  `json:"buffer_time"`
+	BufferTime int64  `json:"bufferTime"`
 	jwt.StandardClaims
 }

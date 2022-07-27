@@ -4,7 +4,7 @@ import "gorm.io/gorm"
 
 type Menu struct {
 	gorm.Model
-	ParentId    int64  `gorm:"column:parent_id;default:0;NOT NULL" json:"parent_id"` // 父节点ID
+	ParentID    int64  `gorm:"column:parent_id;default:0;NOT NULL" json:"parent_id"` // 父节点ID
 	Path        string `gorm:"column:path;NOT NULL" json:"path"`                     // 路由path
 	Name        string `gorm:"column:name;NOT NULL" json:"name"`                     // 路由名称
 	Hidden      int    `gorm:"column:hidden;default:0;NOT NULL" json:"hidden"`       // 0：隐藏，1：展示

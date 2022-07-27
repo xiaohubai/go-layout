@@ -14,7 +14,7 @@ import (
 func AddCasbin(c *gin.Context, r request.CasbinReq) error {
 	t := model.CasbinRule{
 		Ptype: "p",
-		V0:    r.RoleId,
+		V0:    r.RoleID,
 		V1:    r.Path,
 		V2:    strings.ToUpper(r.Method),
 	}

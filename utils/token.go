@@ -19,10 +19,10 @@ func createToken(claims model.Claims) (string, error) {
 // SetToken 生成token
 func SetToken(c *gin.Context, user *model.User) (*response.TokenResp, error) {
 	claims := model.Claims{
-		Uid:        user.Uid,
-		Username:   user.Username,
+		UID:        user.UID,
+		UserName:   user.UserName,
 		Phone:      user.Phone,
-		RoleId:     user.RoleId,
+		RoleID:     user.RoleID,
 		RoleName:   user.RoleName,
 		State:      user.State,
 		BufferTime: global.Cfg.JWT.BufferTime,

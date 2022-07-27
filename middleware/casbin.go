@@ -22,7 +22,7 @@ func Casbin() gin.HandlerFunc {
 			userinfo := claims.(*model.Claims)
 			obj := c.Request.URL.Path
 			act := c.Request.Method
-			sub := userinfo.RoleId
+			sub := userinfo.RoleID
 			e := SyncedEnforcer()
 			// 判断策略中是否存在
 			if ok, err := e.Enforce(sub, obj, act); ok {
