@@ -55,6 +55,10 @@ const (
 	December  = 12
 )
 
-var (
+const (
 	TopicOfWarn = "warn"
+)
+
+const (
+	AdminRoleID = "0"
 )

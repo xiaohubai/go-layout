@@ -120,9 +120,6 @@ func Register(c *gin.Context, u *model.User) (err error) {
 	u.UpdatedUser = u.UserName
 	u.UID = utils.TraceId(c)
 	u.Salt = utils.RandString(7)
-	u.Avatar = "avatar.jpg"
-	u.NickName = "hi"
-	u.State = "1"
 	u.Password = utils.Md5([]byte(u.Password + u.Salt))
 
 	err = dao.CreateOneUser(c, []model.User{*u})
