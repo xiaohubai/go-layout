@@ -3,33 +3,23 @@ package main
 import (
 	"fmt"
 	"log"
-	"sync"
 	"time"
 
 	"github.com/fvbock/endless"
 	"github.com/gin-gonic/gin"
 	"github.com/xiaohubai/go-layout/configs/global"
 	_ "github.com/xiaohubai/go-layout/plugins"
-	"github.com/xiaohubai/go-layout/plugins/ants"
 	"github.com/xiaohubai/go-layout/plugins/tracing"
 	"github.com/xiaohubai/go-layout/router"
 )
 
 func main() {
-	closer := tracing.Init()
-	defer closer.Close()
-	defer ants.Release()
-	wg := sync.WaitGroup{}
-	defer wg.Wait()
+	t := tracing.Init()
+	defer t.Close()
 
-	wg.Add(1)
-	ants.Go(func() {
-		if err := HTTPServer(); err != nil {
-			log.Fatal(err)
-		}
-		wg.Done()
-	})
-
+	if err := HTTPServer(); err != nil {
+		log.Fatal(err)
+	}
 }
 
 //Server 服务启动

@@ -15,7 +15,7 @@ import (
 func Casbin() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		if claims, ok := c.Get("claims"); !ok {
-			response.Fail(c, response.TokenFail, nil)
+			response.Fail(c, response.TokenFailed, nil)
 			c.Abort()
 			return
 		} else {
@@ -28,7 +28,7 @@ func Casbin() gin.HandlerFunc {
 			if ok, err := e.Enforce(sub, obj, act); ok {
 				c.Next()
 			} else {
-				response.Fail(c, response.CasbinFail, err)
+				response.Fail(c, response.CasbinFailed, err)
 				c.Abort()
 				return
 			}

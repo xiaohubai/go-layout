@@ -34,7 +34,7 @@ func RedisLimiter() gin.HandlerFunc {
 			if res.Allowed == 0 {
 				seconds := int(res.RetryAfter / time.Second)
 				c.Header("RateLimit-RetryAfter", strconv.Itoa(seconds))
-				response.Fail(c, response.ErrRateLimited, nil)
+				response.Fail(c, response.RateLimited, nil)
 				c.Abort()
 			}
 		}

@@ -5,3 +5,10 @@ type CasbinReq struct {
 	Path   string `json:"path" binding:"required"`
 	Method string `json:"method" binding:"required"`
 }
+
+type CasbinListReq struct {
+	Ptype  string `json:"ptype"`
+	RoleID string `json:"roleID"`
+	Path   string `json:"path"`
+	Method string `json:"method"`
+}

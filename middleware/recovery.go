@@ -35,7 +35,7 @@ func Recovery() gin.HandlerFunc {
 				}
 				kafka.WriteToKafka(consts.TopicOfWarn, utils.JsonToString(data))
 				span.LogFields(log.Object("Recovery()", err), log.Object("error", bufs))
-				response.Fail(c, response.CommonFail, nil)
+				response.Fail(c, response.CommonFailed, nil)
 				c.Abort()
 			}
 		}()

@@ -21,7 +21,7 @@ func Captcha(c *gin.Context) {
 	cp := base64Captcha.NewCaptcha(driver, store)
 	if id, b64s, err := cp.Generate(); err != nil {
 		global.Log.Error(utils.TraceId(c), zap.Any("key", "func"), zap.Any("msg", fmt.Sprintf("%s:%s", "验证码获取失败", err)))
-		response.Fail(c, response.CaptchaFail, nil)
+		response.Fail(c, response.CaptchaFailed, nil)
 	} else {
 		response.Ok(c, response.CaptchaResp{CaptchaID: id, PicPath: b64s, CaptchaLength: global.Cfg.Captcha.KeyLong})
 	}

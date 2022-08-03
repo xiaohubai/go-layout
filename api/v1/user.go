@@ -21,7 +21,7 @@ import (
 func Register(c *gin.Context) {
 	var r request.Register
 	if err := utils.ShouldBindJSON(c, &r); err != nil {
-		response.Fail(c, response.ParamsFail, err)
+		response.Fail(c, response.ParamsFailed, err)
 		return
 	}
 	u := &model.User{
@@ -39,7 +39,7 @@ func Register(c *gin.Context) {
 	err := service.Register(c, u)
 	if err != nil {
 		global.Log.Error(utils.TraceId(c), zap.Any("key", "func"), zap.Any("msg", fmt.Sprintf("%s:%s", "注册失败", err)))
-		response.Fail(c, response.RegisterFail, err)
+		response.Fail(c, response.RegisterFailed, err)
 		return
 	}
 	response.Ok(c, nil)
@@ -55,18 +55,18 @@ func Login(c *gin.Context) {
 	var r request.LoginReq
 	if err := utils.ShouldBindJSON(c, &r); err != nil {
 		global.Log.Error(utils.TraceId(c), zap.Any("key", "func"), zap.Any("msg", fmt.Sprintf("%s:%s", "参数校验错误", err)))
-		response.Fail(c, response.ParamsFail, err)
+		response.Fail(c, response.ParamsFailed, err)
 		return
 	}
 	if !store.Verify(r.CaptchaID, r.Captcha, true) {
 		global.Log.Error(utils.TraceId(c), zap.Any("key", "func"), zap.Any("msg", "验证码校验失败"))
-		response.Fail(c, response.CaptchaVerifyFail, nil)
+		response.Fail(c, response.CaptchaVerifyFailed, nil)
 		return
 	}
 	u := &model.User{UserName: r.UserName, Password: r.Password}
 	if loginResp, err := service.Login(c, u); err != nil {
 		span.LogFields(log.Object("service.Login(c, u)", u), log.Object("error", err))
-		response.Fail(c, response.LoginFail, err)
+		response.Fail(c, response.LoginFailed, err)
 	} else {
 		response.Ok(c, loginResp)
 	}
@@ -80,7 +80,7 @@ func UserInfo(c *gin.Context) {
 	}
 	if userInfoResp, err := service.UserInfoList(c, u); err != nil {
 		global.Log.Error(utils.TraceId(c), zap.Any("key", "func"), zap.Any("msg", fmt.Sprintf("%s:%s", "获取用户信息失败", err)))
-		response.Fail(c, response.GetUserInfoFaild, err)
+		response.Fail(c, response.GetUserInfoFailed, err)
 	} else {
 		response.Ok(c, map[string]interface{}{"userInfo": userInfoResp[0]})
 	}
@@ -89,30 +89,12 @@ func UserInfo(c *gin.Context) {
 func UserInfoList(c *gin.Context) {
 	claims := c.MustGet("claims").(*model.Claims)
 	if claims.RoleID != consts.AdminRoleID {
-		response.Fail(c, response.GetUserInfoFaild, fmt.Errorf("非超级管理员"))
+		response.Fail(c, response.GetUserInfoFailed, fmt.Errorf("非超级管理员"))
 		return
 	}
-	var r request.UserInfoReq
-	if err := utils.ShouldBindJSON(c, &r); err != nil {
-		global.Log.Error(utils.TraceId(c), zap.Any("key", "func"), zap.Any("msg", fmt.Sprintf("%s:%s", "参数校验错误", err)))
-		response.Fail(c, response.ParamsFail, err)
-		return
-	}
-
-	u := &model.User{
-		UserName:    r.UserName,
-		UID:         r.UID,
-		RoleID:      r.RoleID,
-		RoleName:    r.RoleName,
-		Phone:       r.Phone,
-		Wechat:      r.Wechat,
-		State:       r.State,
-		CreatedUser: r.CreatedUser,
-		UpdatedUser: r.UpdatedUser,
-	}
-	if userInfoResp, err := service.UserInfoList(c, u); err != nil {
+	if userInfoResp, err := service.UserInfoList(c, &model.User{}); err != nil {
 		global.Log.Error(utils.TraceId(c), zap.Any("key", "func"), zap.Any("msg", fmt.Sprintf("%s:%s", "获取用户列表失败", err)))
-		response.Fail(c, response.GetUserInfoFaild, err)
+		response.Fail(c, response.GetUserInfoFailed, err)
 	} else {
 		response.Ok(c, userInfoResp)
 	}
@@ -123,7 +105,7 @@ func SetUserInfo(c *gin.Context) {
 	var r request.UserInfoReq
 	if err := utils.ShouldBindJSON(c, &r); err != nil {
 		global.Log.Error(utils.TraceId(c), zap.Any("key", "func"), zap.Any("msg", fmt.Sprintf("%s:%s", "参数校验错误", err)))
-		response.Fail(c, response.ParamsFail, err)
+		response.Fail(c, response.ParamsFailed, err)
 		return
 	}
 
@@ -142,7 +124,7 @@ func SetUserInfo(c *gin.Context) {
 	}
 	if err := service.SetUserInfo(c, u); err != nil {
 		global.Log.Error(utils.TraceId(c), zap.Any("key", "func"), zap.Any("msg", fmt.Sprintf("%s:%s", "设置用户信息失败", err)))
-		response.Fail(c, response.SetUserInfoFaild, err)
+		response.Fail(c, response.SetUserInfoFailed, err)
 	} else {
 		response.Ok(c, nil)
 	}

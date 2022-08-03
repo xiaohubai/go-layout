@@ -1,14 +1,13 @@
 package service
 
 import (
-	"io"
 	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/xiaohubai/go-layout/dao"
 	"github.com/xiaohubai/go-layout/model"
 	"github.com/xiaohubai/go-layout/model/request"
-	"github.com/xuri/excelize/v2"
+	"github.com/xiaohubai/go-layout/model/response"
 )
 
 func AddCasbin(c *gin.Context, r request.CasbinReq) error {
@@ -25,33 +24,25 @@ func AddCasbin(c *gin.Context, r request.CasbinReq) error {
 	return nil
 }
 
-func AddCasbinWithExcel(c *gin.Context, file io.Reader) error {
-	f, err := excelize.OpenReader(file)
-	if err != nil {
-		return err
+func GetCasbinList(c *gin.Context, r request.CasbinListReq) (casbin []response.CasbinResp, err error) {
+	t := model.CasbinRule{
+		Ptype: r.Ptype,
+		V0:    r.RoleID,
+		V1:    r.Path,
+		V2:    strings.ToUpper(r.Method),
 	}
-	defer f.Close()
-
-	rows, err := f.GetRows("Sheet1")
+	casbins, err := dao.GetCasbinList(c, t)
 	if err != nil {
-		return err
+		return nil, err
 	}
-
-	casbins := []model.CasbinRule{}
-	for _, row := range rows {
-		if row[0] != "" && row[1] != "" && row[2] != "" {
-			data := model.CasbinRule{
-				Ptype: "p",
-				V0:    row[0],
-				V1:    row[1],
-				V2:    strings.ToUpper(row[2]),
-			}
-			casbins = append(casbins, data)
+	for _, v := range casbins {
+		data := response.CasbinResp{
+			ID:     v.ID,
+			RoleID: v.V0,
+			Path:   v.V1,
+			Method: v.V2,
 		}
+		casbin = append(casbin, data)
 	}
-	err = dao.AddCasbin(c, casbins)
-	if err != nil {
-		return err
-	}
-	return nil
+	return
 }

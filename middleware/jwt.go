@@ -13,7 +13,7 @@ func JWTAuth() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		auth := strings.Split(c.Request.Header.Get("Authorization"), " ")
 		if len(auth) != 2 {
-			response.Fail(c, response.TokenFail, nil)
+			response.Fail(c, response.TokenFailed, nil)
 			c.Abort()
 			return
 		}
@@ -25,7 +25,7 @@ func JWTAuth() gin.HandlerFunc {
 				c.Abort()
 				return
 			}
-			response.Fail(c, response.TokenFail, nil)
+			response.Fail(c, response.TokenFailed, nil)
 			c.Abort()
 			return
 		}
