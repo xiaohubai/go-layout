@@ -6,6 +6,8 @@ import (
 	"github.com/gin-gonic/gin"
 	ut "github.com/go-playground/universal-translator"
 	"github.com/go-playground/validator/v10"
+	"github.com/xiaohubai/go-layout/configs/consts"
+	"github.com/xiaohubai/go-layout/model"
 )
 
 func ShouldBindJSON(c *gin.Context, obj interface{}) error {
@@ -23,4 +25,10 @@ func ShouldBindJSON(c *gin.Context, obj interface{}) error {
 		}
 	}
 	return err
+}
+
+func IsAdminID(c *gin.Context) bool {
+	claims := c.MustGet("claims").(*model.Claims)
+	fmt.Println(claims.RoleID)
+	return claims.RoleID == consts.AdminRoleID
 }

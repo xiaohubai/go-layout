@@ -11,7 +11,7 @@ type Resp struct {
 	Code    int         `json:"code"`
 	Data    interface{} `json:"data"`
 	Msg     interface{} `json:"msg"`
-	TraceId string      `json:"traceID"`
+	TraceId string      `json:"traceId"`
 }
 
 const (
@@ -37,6 +37,8 @@ const (
 	GetUserInfoFailed   = 4018 // 获取用户信息失败
 	SetUserInfoFailed   = 4019 // 更新用户信息失败
 	GetCasbinListFailed = 4020 // 获取权限表信息失败
+	NotAdminID          = 4021 // 无权限操作该接口
+	SetCasbinFailed     = 4022 // 更新权限失败
 )
 
 var codeMsg = map[int]string{
@@ -62,6 +64,8 @@ var codeMsg = map[int]string{
 	GetUserInfoFailed:   "获取用户信息失败",
 	SetUserInfoFailed:   "更新用户信息失败",
 	GetCasbinListFailed: "获取权限表信息失败",
+	NotAdminID:          "无权限操作该接口",
+	SetCasbinFailed:     "更新权限失败",
 }
 
 func Result(c *gin.Context, code int, data, msg interface{}) {

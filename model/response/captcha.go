@@ -1,7 +1,7 @@
 package response
 
 type CaptchaResp struct {
-	CaptchaID     string `json:"captchaID"`
+	CaptchaID     string `json:"captchaId"`
 	PicPath       string `json:"picPath"`
-	CaptchaLength int `json:"captchaLength"`
+	CaptchaLength int    `json:"captchaLength"`
 }

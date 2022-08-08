@@ -17,7 +17,7 @@ type UserInfoResp struct {
 	NickName      string `json:"nickName"`      // 昵称
 	Birth         string `json:"birth"`         // 出生日期:时间戳
 	Avatar        string `json:"avatar"`        // 头像:ip+uid/avatar/+值
-	RoleID        string `json:"roleID"`        // 角色id：0:管理员，1：正常用户
+	RoleID        string `json:"roleId"`        // 角色id：0:管理员，1：正常用户
 	RoleName      string `json:"roleName"`      // 角色名称
 	Phone         string `json:"phone"`         // 手机号：唯一
 	Wechat        string `json:"wechat"`        // 微信号

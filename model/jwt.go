@@ -8,7 +8,7 @@ type Claims struct {
 	UID        string `json:"uid"`
 	UserName   string `json:"userName"`
 	Phone      string `json:"phone"`
-	RoleID     string `json:"roleID"`
+	RoleID     string `json:"roleId"`
 	RoleName   string `json:"roleName"`
 	Birth      string `json:"brith"`
 	State      string `json:"state"`

@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -17,7 +18,14 @@ func AddCasbin(c *gin.Context, r request.CasbinReq) error {
 		V1:    r.Path,
 		V2:    strings.ToUpper(r.Method),
 	}
-	err := dao.AddCasbin(c, []model.CasbinRule{t})
+	casbins, err := dao.CasbinList(c, t)
+	if err != nil {
+		return err
+	}
+	if len(casbins) > 0 {
+		return fmt.Errorf("该权限路由已存在")
+	}
+	err = dao.AddCasbin(c, []model.CasbinRule{t})
 	if err != nil {
 		return err
 	}
@@ -45,4 +53,44 @@ func GetCasbinList(c *gin.Context, r request.CasbinListReq) (casbin []response.C
 		casbin = append(casbin, data)
 	}
 	return
+}
+
+func DelCasbin(c *gin.Context, r request.DelCasbinReq) error {
+	t := model.CasbinRule{
+		ID: uint(r.ID),
+	}
+	casbins, err := dao.CasbinList(c, t)
+	if err != nil {
+		return err
+	}
+	if len(casbins) <= 0 {
+		return fmt.Errorf("该权限路由不存在")
+	}
+	err = dao.DelCasbin(c, t)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func SetCasbin(c *gin.Context, r request.SetCasbinReq) error {
+	t := model.CasbinRule{
+		ID:    uint(r.ID),
+		Ptype: r.Ptype,
+		V0:    r.RoleID,
+		V1:    r.Path,
+		V2:    strings.ToUpper(r.Method),
+	}
+	casbins, err := dao.CasbinList(c, model.CasbinRule{ID: uint(r.ID)})
+	if err != nil {
+		return err
+	}
+	if len(casbins) <= 0 {
+		return fmt.Errorf("该权限路由不存在")
+	}
+	err = dao.SetCasbin(c, t)
+	if err != nil {
+		return err
+	}
+	return nil
 }

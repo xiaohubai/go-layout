@@ -1,19 +1,9 @@
 package response
 
-type Menus struct {
-	Menu
-	Temp
-}
-
-type Temp struct {
-	Path     string `json:"path"`
-	Redirect string `json:"redirect"`
-}
-
 type Menu struct {
-	ID        int    `json:"ID"`
-	CreatedAt string `json:"CreatedAt"`
-	UpdatedAt string `json:"UpdatedAt"`
+	ID        int    `json:"id"`
+	CreatedAt string `json:"createdAt"`
+	UpdatedAt string `json:"updatedAt"`
 	ParentID  string `json:"parentId"`
 	Path      string `json:"path"`
 	Name      string `json:"name"`

@@ -24,14 +24,14 @@ func Recovery() gin.HandlerFunc {
 				buf := make([]byte, 2048)
 				buf = buf[:runtime.Stack(buf, false)]
 				bufs := string(buf)
-				tracID := ""
+				tracId := ""
 				if id, ok := c.Get("X-Trace-ID"); ok {
-					tracID = id.(string)
+					tracId = id.(string)
 				}
 				data := model.Warn{
 					Type:    "panic",
 					Date:    utils.Datetime(),
-					TraceID: tracID,
+					TraceID: tracId,
 				}
 				kafka.WriteToKafka(consts.TopicOfWarn, utils.JsonToString(data))
 				span.LogFields(log.Object("Recovery()", err), log.Object("error", bufs))
