@@ -54,7 +54,6 @@ func GetCasbinList(c *gin.Context) {
 	} else {
 		response.Ok(c, casbinListResp)
 	}
-
 }
 
 func DelCasbin(c *gin.Context) {

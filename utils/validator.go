@@ -29,6 +29,5 @@ func ShouldBindJSON(c *gin.Context, obj interface{}) error {
 
 func IsAdminID(c *gin.Context) bool {
 	claims := c.MustGet("claims").(*model.Claims)
-	fmt.Println(claims.RoleID)
 	return claims.RoleID == consts.AdminRoleID
 }
