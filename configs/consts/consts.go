@@ -5,12 +5,6 @@ import (
 	"time"
 )
 
-const (
-	ConfigEnv      = ConfigDevFile
-	ConfigDevFile  = "./configs/config_dev.yaml"
-	ConfigProdFile = "./configs/config_prod.yaml"
-)
-
 var (
 	TokenExpired     = fmt.Errorf("Token is expired")
 	TokenNotValidYet = fmt.Errorf("Token not active yet")

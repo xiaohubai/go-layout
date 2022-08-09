@@ -21,4 +21,4 @@ COPY --from=builder /go/src/github.com/xiaohubai/go-layout ./
 
 EXPOSE 8888
 
-ENTRYPOINT ./server -c config.docker.yaml
+ENTRYPOINT ./server -c prod

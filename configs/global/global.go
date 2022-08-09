@@ -13,9 +13,9 @@ import (
 )
 
 var (
-	ConfigEnv      = ConfigDevFile
-	ConfigDevFile  = "./config_dev.yaml"
-	ConfigProdFile = "./config_prod.yaml"
+	ConfigEnvDev  = "dev"
+	ConfigEnvProd = "prod"
+	ConfigFileEnv = "./config_dev.yaml"
 )
 var (
 	Viper  *viper.Viper

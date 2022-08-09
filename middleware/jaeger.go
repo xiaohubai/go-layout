@@ -3,15 +3,15 @@ package middleware
 import (
 	"context"
 
+	"github.com/uber/jaeger-client-go"
 	"github.com/xiaohubai/go-layout/configs/global"
 
 	"github.com/gin-gonic/gin"
 	"github.com/opentracing/opentracing-go"
 	"github.com/opentracing/opentracing-go/ext"
-	"github.com/uber/jaeger-client-go"
 )
 
-func Tracing() gin.HandlerFunc {
+func Jaeger() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var newCtx context.Context
 		var span opentracing.Span

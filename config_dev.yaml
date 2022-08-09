@@ -39,7 +39,7 @@ jaeger:
 
 system:
   name: 'go-layout'
-  port: 8888
+  port: ':8888'
   db-type: 'mysql'
   gin-mode: 'test'   #debug、release、test
   rate: 2

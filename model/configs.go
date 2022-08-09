@@ -67,7 +67,7 @@ type Casbin struct {
 
 type System struct {
 	Name    string `mapstructure:"name" json:"name" yaml:"name"`             // 服务名
-	Port    int    `mapstructure:"port" json:"port" yaml:"port"`             // 端口值
+	Port    string `mapstructure:"port" json:"port" yaml:"port"`             // 端口值
 	DbType  string `mapstructure:"db-type" json:"dbType" yaml:"db-type"`     // 数据库类型:mysql(默认)|sqlite|sqlserver|postgresql
 	GinMode string `mapstructure:"gin-mode" json:"gin-mode" yaml:"gin-mode"` // ginMode模式
 	Rate    int    `mapstructure:"rate" json:"rate" yaml:"rate"`             // 限流
