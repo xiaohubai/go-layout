@@ -32,7 +32,7 @@ func Routers() *gin.Engine {
 		r2.POST("/v1/getCasbinList", v1.GetCasbinList) // 获取权限表
 		r2.POST("/v1/delCasbin", v1.DelCasbin)         // 删除权限
 		r2.POST("/v1/setCasbin", v1.SetCasbin)         // 删除权限
-		//r2.POST("/getDict", v1.GetDict)	// rpc接口
+		r2.GET("/v1/getDict", v1.GetDict)              // 获取字典序
 		//r2.POST("/upload", v1.GetDict)   // 通用上传接口
 		//r2.POST("/download", v1.GetDict) // 通用下载接口
 	}

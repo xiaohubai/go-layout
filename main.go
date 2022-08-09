@@ -15,7 +15,6 @@ import (
 func main() {
 	j := jaeger.Init()
 	defer j.Close()
-
 	if err := HTTPServer(); err != nil {
 		log.Fatal(err)
 	}

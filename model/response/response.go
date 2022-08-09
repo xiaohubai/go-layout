@@ -39,6 +39,7 @@ const (
 	GetCasbinListFailed = 4020 // 获取权限表信息失败
 	NotAdminID          = 4021 // 无权限操作该接口
 	SetCasbinFailed     = 4022 // 更新权限失败
+	GetDictListFailed   = 4023 // 获取字典序失败
 )
 
 var codeMsg = map[int]string{
@@ -46,7 +47,7 @@ var codeMsg = map[int]string{
 	CommonFailed:        "系统内部错误",
 	CaptchaFailed:       "验证码获取失败",
 	ParamsFailed:        "参数校验错误",
-	TokenFailed:         "获取token失败",
+	TokenFailed:         "token无效",
 	LoginFailed:         "登录失败",
 	TokenExpired:        "token授权已过期",
 	CasbinFailed:        "权限不足",
@@ -66,6 +67,7 @@ var codeMsg = map[int]string{
 	GetCasbinListFailed: "获取权限表信息失败",
 	NotAdminID:          "无权限操作该接口",
 	SetCasbinFailed:     "更新权限失败",
+	GetDictListFailed:   "获取字典序失败",
 }
 
 func Result(c *gin.Context, code int, data, msg interface{}) {

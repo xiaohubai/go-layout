@@ -56,3 +56,7 @@ const (
 const (
 	AdminRoleID = "0"
 )
+
+const (
+	RPCRemoteByRPCLayout = "rpc-layout"
+)

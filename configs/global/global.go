@@ -13,8 +13,8 @@ import (
 )
 
 var (
-	ConfigEnvDev  = "dev"
-	ConfigEnvProd = "prod"
+	ConsulName    = "consul"
+	ConsulURL     = "172.21.0.2:8500"
 	ConfigFileEnv = "./config_dev.yaml"
 )
 var (

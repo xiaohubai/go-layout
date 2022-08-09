@@ -1,4 +1,3 @@
-
 jwt:
   signing-key: 'jwtSecret'
   expires-time: 604800
@@ -70,3 +69,10 @@ es:
   path: 'http://172.21.0.2:9200'
   username: 'elastic'
   password: '1qaz!QAZ'
+
+consul:
+  rpc-layout:
+    address: '172.21.0.2:8500'
+    scheme: 'http'
+    healthCheck: false
+    endpoint: 'discovery://default/rpc-layout'

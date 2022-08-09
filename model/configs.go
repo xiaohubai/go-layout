@@ -1,20 +1,28 @@
 package model
 
 type Config struct {
-	JWT     JWT     `mapstructure:"jwt" json:"jwt" yaml:"jwt"`
-	Zap     Zap     `mapstructure:"zap" json:"zap" yaml:"zap"`
-	Redis   Redis   `mapstructure:"redis" json:"redis" yaml:"redis"`
-	Email   Email   `mapstructure:"email" json:"email" yaml:"email"`
-	Casbin  Casbin  `mapstructure:"casbin" json:"casbin" yaml:"casbin"`
-	System  System  `mapstructure:"system" json:"system" yaml:"system"`
-	Captcha Captcha `mapstructure:"captcha" json:"captcha" yaml:"captcha"`
-	Mysql   Mysql   `mapstructure:"mysql" json:"mysql" yaml:"mysql"`
-	Local   Local   `mapstructure:"local" json:"local" yaml:"local"`
-	Excel   Excel   `mapstructure:"excel" json:"excel" yaml:"excel"`
-	Kafka   Kafka   `mapstructure:"kafka" json:"kafka" yaml:"kafka"`
-	Es      Es      `mapstructure:"es" json:"es" yaml:"es"`
-	Jaeger  Jaeger  `mapstructure:"jaeger" json:"jaeger" yaml:"jaeger"`
+	JWT     JWT                 `mapstructure:"jwt" json:"jwt" yaml:"jwt"`
+	Zap     Zap                 `mapstructure:"zap" json:"zap" yaml:"zap"`
+	Redis   Redis               `mapstructure:"redis" json:"redis" yaml:"redis"`
+	Email   Email               `mapstructure:"email" json:"email" yaml:"email"`
+	Casbin  Casbin              `mapstructure:"casbin" json:"casbin" yaml:"casbin"`
+	System  System              `mapstructure:"system" json:"system" yaml:"system"`
+	Captcha Captcha             `mapstructure:"captcha" json:"captcha" yaml:"captcha"`
+	Mysql   Mysql               `mapstructure:"mysql" json:"mysql" yaml:"mysql"`
+	Local   Local               `mapstructure:"local" json:"local" yaml:"local"`
+	Excel   Excel               `mapstructure:"excel" json:"excel" yaml:"excel"`
+	Kafka   Kafka               `mapstructure:"kafka" json:"kafka" yaml:"kafka"`
+	Es      Es                  `mapstructure:"es" json:"es" yaml:"es"`
+	Jaeger  Jaeger              `mapstructure:"jaeger" json:"jaeger" yaml:"jaeger"`
+	Consul  map[string]Register `mapstructure:"consul" json:"consul" yaml:"consul"`
 }
+type Register struct {
+	Address     string `mapstructure:"address" json:"address" yaml:"address"`
+	Scheme      string `mapstructure:"scheme" json:"scheme" yaml:"scheme"`
+	HealthCheck bool   `mapstructure:"healthCheck" json:"healthCheck" yaml:"healthCheck"`
+	Endpoint    string `mapstructure:"endpoint" json:"endpoint" yaml:"endpoint"`
+}
+
 type Jaeger struct {
 	Name string `mapstructure:"name" json:"name" yaml:"name"`
 	Host string `mapstructure:"host" json:"host" yaml:"host"`
