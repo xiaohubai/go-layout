@@ -11,6 +11,7 @@ import (
 	"github.com/xiaohubai/go-layout/model/response"
 )
 
+// AddCasbin 增加权限路由
 func AddCasbin(c *gin.Context, r request.CasbinReq) error {
 	t := model.CasbinRule{
 		Ptype: "p",
@@ -32,6 +33,7 @@ func AddCasbin(c *gin.Context, r request.CasbinReq) error {
 	return nil
 }
 
+// GetCasbinList 获取全部权限路由列表
 func GetCasbinList(c *gin.Context, r request.CasbinListReq) (casbin []response.CasbinResp, err error) {
 	t := model.CasbinRule{
 		Ptype: r.Ptype,
@@ -55,6 +57,7 @@ func GetCasbinList(c *gin.Context, r request.CasbinListReq) (casbin []response.C
 	return
 }
 
+// DelCasbin 删除一条权限路由
 func DelCasbin(c *gin.Context, r request.DelCasbinReq) error {
 	t := model.CasbinRule{
 		ID: uint(r.ID),
@@ -73,6 +76,7 @@ func DelCasbin(c *gin.Context, r request.DelCasbinReq) error {
 	return nil
 }
 
+// SetCasbin 更新权限路由
 func SetCasbin(c *gin.Context, r request.SetCasbinReq) error {
 	t := model.CasbinRule{
 		ID:    uint(r.ID),

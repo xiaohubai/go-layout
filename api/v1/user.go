@@ -13,6 +13,7 @@ import (
 	"github.com/xiaohubai/go-layout/model"
 	"github.com/xiaohubai/go-layout/model/request"
 	"github.com/xiaohubai/go-layout/model/response"
+	"github.com/xiaohubai/go-layout/plugins/kafka"
 	"github.com/xiaohubai/go-layout/plugins/metrics"
 	"github.com/xiaohubai/go-layout/service"
 	"github.com/xiaohubai/go-layout/utils"
@@ -68,6 +69,8 @@ func Login(c *gin.Context) {
 		span.LogFields(log.Object("service.Login(c, u)", u), log.Object("error", err))
 		response.Fail(c, response.LoginFailed, err)
 	} else {
+		//登录成功后，将用户信息和token发送到kafka
+		kafka.WriteToKafka(consts.TopicOfLoginInfo, utils.JsonToString(loginResp))
 		response.Ok(c, loginResp)
 	}
 }

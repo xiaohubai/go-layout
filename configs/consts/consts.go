@@ -51,6 +51,7 @@ const (
 
 const (
 	TopicOfWarn = "warn"
+	TopicOfLoginInfo="loginInfo"
 )
 
 const (

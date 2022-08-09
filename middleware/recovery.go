@@ -6,11 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/opentracing/opentracing-go"
 	"github.com/opentracing/opentracing-go/log"
-	"github.com/xiaohubai/go-layout/configs/consts"
-	"github.com/xiaohubai/go-layout/model"
 	"github.com/xiaohubai/go-layout/model/response"
-	"github.com/xiaohubai/go-layout/plugins/kafka"
-	"github.com/xiaohubai/go-layout/utils"
 )
 
 func Recovery() gin.HandlerFunc {
@@ -24,16 +20,7 @@ func Recovery() gin.HandlerFunc {
 				buf := make([]byte, 2048)
 				buf = buf[:runtime.Stack(buf, false)]
 				bufs := string(buf)
-				tracId := ""
-				if id, ok := c.Get("X-Trace-ID"); ok {
-					tracId = id.(string)
-				}
-				data := model.Warn{
-					Type:    "panic",
-					Date:    utils.Datetime(),
-					TraceID: tracId,
-				}
-				kafka.WriteToKafka(consts.TopicOfWarn, utils.JsonToString(data))
+
 				span.LogFields(log.Object("Recovery()", err), log.Object("error", bufs))
 				response.Fail(c, response.CommonFailed, nil)
 				c.Abort()

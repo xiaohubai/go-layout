@@ -1,12 +1,9 @@
 package kafka
 
 import (
-	"strings"
 	"time"
 
 	"github.com/Shopify/sarama"
-	v1 "github.com/xiaohubai/go-layout/api/v1"
-	"github.com/xiaohubai/go-layout/configs/consts"
 	"github.com/xiaohubai/go-layout/configs/global"
 )
 
@@ -30,7 +27,6 @@ func Consumer() sarama.Consumer {
 	if err != nil {
 		panic(err)
 	}
-	ReadFromKafka(global.Cfg.Kafka.Topics)
 	return c
 }
 
@@ -41,6 +37,7 @@ func WriteToKafka(topic, data string) {
 	_, _, _ = global.KafkaProducer.SendMessage(msg)
 }
 
+/*
 func ReadFromKafka(topics string) {
 	topic := strings.Split(topics, ",")
 	for _, t := range topic {
@@ -52,3 +49,4 @@ func ReadFromKafka(topics string) {
 		}
 	}
 }
+*/

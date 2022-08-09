@@ -14,7 +14,7 @@ import (
 
 var store = base64Captcha.DefaultMemStore
 
-//Captcha 生成验证码
+// Captcha 生成验证码
 func Captcha(c *gin.Context) {
 	driver := base64Captcha.NewDriverDigit(global.Cfg.Captcha.ImgHeight, global.Cfg.Captcha.ImgWidth,
 		global.Cfg.Captcha.KeyLong, 0.7, 80)

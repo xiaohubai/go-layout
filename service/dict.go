@@ -6,6 +6,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
+	"github.com/opentracing/opentracing-go"
+	"github.com/opentracing/opentracing-go/log"
 	"github.com/xiaohubai/go-layout/configs/consts"
 	"github.com/xiaohubai/go-layout/configs/global"
 	"github.com/xiaohubai/go-layout/model"
@@ -13,7 +15,12 @@ import (
 	v1 "github.com/xiaohubai/rpc_layout/api/dict/v1"
 )
 
+// GetDictList 获取字典序
 func GetDictList(c *gin.Context) (map[string]interface{}, error) {
+	span, ctx := opentracing.StartSpanFromContext(c.Request.Context(), "server")
+	c.Request = c.Request.WithContext(opentracing.ContextWithSpan(ctx, span))
+	defer span.Finish()
+
 	r := global.Cfg.Consul[consts.RPCRemoteByRPCLayout]
 	d := consul.NewDiscovery(&model.Register{Address: r.Address, Scheme: r.Scheme, HealthCheck: r.HealthCheck})
 	conn, err := grpc.DialInsecure(
@@ -22,13 +29,20 @@ func GetDictList(c *gin.Context) (map[string]interface{}, error) {
 		grpc.WithDiscovery(d),
 	)
 	if err != nil {
+		span.LogFields(log.Object("grpc.DialInsecure", r), log.Object("error", err))
+		return nil, fmt.Errorf("请求服务发现失败")
+	}
+	proxy := v1.NewDictClient(conn)
+	rpcReq := &v1.DictRequest{
+		Tag: "ssss",
+	}
+	rpcResp, err := proxy.Get(c.Request.Context(), rpcReq)
+	if err != nil {
+		span.LogFields(log.Object("client.Get", rpcReq), log.Object("error", err))
 		return nil, fmt.Errorf("远程调用失败")
 	}
-	client := v1.NewDictClient(conn)
-	resp, err := client.Get(context.Background(), &v1.DictRequest{Tag: "ssss"})
-	if err != nil {
-		fmt.Println(err)
+	resp := map[string]interface{}{
+		"guide": rpcResp.Guide,
 	}
-	fmt.Println(resp)
-	return nil, nil
+	return resp, nil
 }

@@ -21,7 +21,7 @@ func main() {
 
 }
 
-//Server 服务启动
+//HTTPServer 服务启动
 func HTTPServer() error {
 	gin.SetMode(global.Cfg.System.GinMode)
 	r := router.Routers()

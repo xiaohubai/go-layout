@@ -10,6 +10,7 @@ import (
 	"github.com/xiaohubai/go-layout/utils"
 )
 
+// AddCasbin 添加权限路由
 func AddCasbin(c *gin.Context) {
 	span, ctx := opentracing.StartSpanFromContext(c.Request.Context(), "api")
 	c.Request = c.Request.WithContext(opentracing.ContextWithSpan(ctx, span))
@@ -31,6 +32,7 @@ func AddCasbin(c *gin.Context) {
 
 }
 
+// GetCasbinList 获取权限路由列表
 func GetCasbinList(c *gin.Context) {
 	span, ctx := opentracing.StartSpanFromContext(c.Request.Context(), "api")
 	c.Request = c.Request.WithContext(opentracing.ContextWithSpan(ctx, span))
@@ -56,6 +58,7 @@ func GetCasbinList(c *gin.Context) {
 	}
 }
 
+// DelCasbin 删除权限路由
 func DelCasbin(c *gin.Context) {
 	span, ctx := opentracing.StartSpanFromContext(c.Request.Context(), "api")
 	c.Request = c.Request.WithContext(opentracing.ContextWithSpan(ctx, span))
@@ -81,6 +84,7 @@ func DelCasbin(c *gin.Context) {
 
 }
 
+// SetCasbin 更新权限路由
 func SetCasbin(c *gin.Context) {
 	span, ctx := opentracing.StartSpanFromContext(c.Request.Context(), "api")
 	c.Request = c.Request.WithContext(opentracing.ContextWithSpan(ctx, span))

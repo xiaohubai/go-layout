@@ -13,6 +13,7 @@ import (
 	"github.com/xiaohubai/go-layout/utils"
 )
 
+//Login 登录
 func Login(c *gin.Context, u *model.User) (result *response.LoginResp, err error) {
 	userInfo, count, err := dao.SelectUser(c, &model.User{UserName: u.UserName})
 	if err != nil {
@@ -57,6 +58,7 @@ func Login(c *gin.Context, u *model.User) (result *response.LoginResp, err error
 	return resp, err
 }
 
+// UserInfoList 获取用户列表
 func UserInfoList(c *gin.Context, u *model.User) ([]response.UserInfoResp, error) {
 	userInfos, _, err := dao.SelectUser(c, u)
 	if err != nil {
@@ -91,11 +93,14 @@ func UserInfoList(c *gin.Context, u *model.User) ([]response.UserInfoResp, error
 	return resp, err
 }
 
+// SetUserInfo 更新用户信息
 func SetUserInfo(c *gin.Context, u *model.User) error {
 	err := dao.UpdateUser(c, u)
 	fmt.Println(err)
 	return err
 }
+
+// Register 注册
 func Register(c *gin.Context, u *model.User) (err error) {
 	if _, err = predis.Get(c.Request.Context(), utils.Md5([]byte(u.UserName))); err == nil {
 		return fmt.Errorf("用户名已存在")
