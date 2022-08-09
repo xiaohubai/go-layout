@@ -11,14 +11,14 @@ import (
 func Routers() *gin.Engine {
 	var router = gin.Default()
 
-	router.Use(m.Jaeger(), m.Translations(), m.Metrics(), m.Recovery())
+	router.Use(m.Jaeger(), m.Metrics(), m.Recovery())
 	r0 := router.Group("")
 	{
 		r0.GET("/metrics", gin.WrapH(promhttp.Handler()))
 	}
 	r1 := router.Group("")
 	{
-		r1.GET("/v1/captcha", v1.Captcha)    // 获取验证码
+		r1.GET("/v1/captcha", v1.Captcha)    // 验证码
 		r1.POST("/v1/register", v1.Register) // 注册
 		r1.POST("/v1/login", v1.Login)       // 登录
 	}

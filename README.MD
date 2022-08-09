@@ -4,19 +4,41 @@
 ├── deploy
 │   ├── docker-compose.yml
 │   └── volumes
+│       ├── elasticsearch
+│       ├── grafana
+│       ├── kibana
+│       ├── mysql
+│       ├── prometheus
+│       └── redis
 ├── configs
+│   ├── consts
+│   └── global
 ├── docs
 ├── api
+│   └── v1
 ├── dao
 ├── model
+│   ├── request
+│   └── response
 ├── service
 ├── middleware
 ├── plugins
+│   ├── ants
+│   ├── consul
+│   ├── email
+│   ├── es
+│   ├── gorm
+│   ├── jaeger
+│   ├── jwt
+│   ├── kafka
+│   ├── metrics
+│   ├── redis
+│   ├── viper
+│   └── zap
 ├── router
 ├── scripts
 ├── utils
 ├── rbac_model.conf
-├── config.docker.yaml
 ├── config_dev.yaml
 ├── Dockerfile
 ├── Makefile
@@ -50,13 +72,12 @@ consul：172.21.0.2:8500
 - excel处理 （github.com/xuri/excelize/v2）
 - 协程控制 （github.com/panjf2000/ants/v2）
 - 分布式接口限流 （github.com/go-redis/redis_rate/v9）
+- consul服务注册/发现，远程配置文件与监听 (github.com/hashicorp/consul)
 
-## 注意事项
-1.除数据库字段名使用下划线。其余前端入参，后端返参、业务代码中字段传递使用驼峰命名
 ## 一键搭建环境
 - 拷贝volumes文件到/usr/local/
 - 增加内网ip：172.21.0.2
-- 执行 make compose
+- 项目根目录执行 make compose
 
-#TODO
-1.新增rpc服务，获取kafka消息，topic告警发邮件
+## 注意事项
+1.除数据库字段名使用下划线。其余前端入参，后端返参、业务代码中字段传递均使用驼峰命名
