@@ -68,7 +68,7 @@
 - kafka组件 （github.com/Shopify/sarama）
 - es组件 （github.com/olivere/elastic/v7）
 - email 组件 （github.com/jordan-wright/email）
-- jaeger全链路 （github.com/uber/jaeger-client-go）
+- jaeger全链路支持opentelemetry和opentracing （github.com/opentracing/opentracing-go，go.opentelemetry.io/otel）
 - prometheus监控 （github.com/prometheus/client_golang）
 - excel处理 （github.com/xuri/excelize/v2）
 - 协程控制 （github.com/panjf2000/ants/v2）

@@ -24,8 +24,8 @@ type Register struct {
 }
 
 type Jaeger struct {
-	Name string `mapstructure:"name" json:"name" yaml:"name"`
-	Host string `mapstructure:"host" json:"host" yaml:"host"`
+	Name    string `mapstructure:"name" json:"name" yaml:"name"`
+	Address string `mapstructure:"address" json:"address" yaml:"address"`
 }
 type Es struct {
 	Path string `mapstructure:"path" json:"path" yaml:"path"`
@@ -75,6 +75,7 @@ type Casbin struct {
 
 type System struct {
 	Name    string `mapstructure:"name" json:"name" yaml:"name"`             // 服务名
+	Version string `mapstructure:"version" json:"version" yaml:"version"`    // 版本
 	Port    string `mapstructure:"port" json:"port" yaml:"port"`             // 端口值
 	DbType  string `mapstructure:"db-type" json:"dbType" yaml:"db-type"`     // 数据库类型:mysql(默认)|sqlite|sqlserver|postgresql
 	GinMode string `mapstructure:"gin-mode" json:"gin-mode" yaml:"gin-mode"` // ginMode模式

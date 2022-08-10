@@ -21,7 +21,7 @@ import (
 )
 
 func OpentracingInit() io.Closer {
-	tracer, closer, err := OpentracingTracer(global.Cfg.Jaeger.Name, global.Cfg.Jaeger.Host)
+	tracer, closer, err := OpentracingTracer(global.Cfg.Jaeger.Name, global.Cfg.Jaeger.Address)
 	if err != nil {
 		panic(fmt.Sprintf("ERROR: cannot init Jaeger: %v\n", err))
 	}
@@ -54,7 +54,7 @@ var (
 )
 
 func OpentelemetryInit() (tp *traceSdk.TracerProvider) {
-	agentConfig := strings.SplitN("172.21.0.2:6831", ":", 2)
+	agentConfig := strings.SplitN(global.Cfg.Jaeger.Address, ":", 2)
 	endpointOption := jaeger.WithAgentEndpoint(jaeger.WithAgentHost(agentConfig[0]), jaeger.WithAgentPort(agentConfig[1]))
 	exp, err := jaeger.New(endpointOption)
 	if err != nil {
@@ -64,8 +64,8 @@ func OpentelemetryInit() (tp *traceSdk.TracerProvider) {
 		traceSdk.WithSampler(traceSdk.ParentBased(traceSdk.TraceIDRatioBased(1.0))),
 		traceSdk.WithBatcher(exp),
 		traceSdk.WithResource(resource.NewSchemaless(
-			semConv.ServiceNameKey.String("go-layout"),
-			semConv.ServiceVersionKey.String("1.0.0"),
+			semConv.ServiceNameKey.String(global.Cfg.Jaeger.Name),
+			semConv.ServiceVersionKey.String(global.Cfg.System.Version),
 			semConv.HostNameKey.String(hostname),
 		)),
 	)
