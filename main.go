@@ -1,20 +1,23 @@
 package main
 
 import (
+	"context"
 	"log"
 	"time"
 
-	"github.com/fvbock/endless"
-	"github.com/gin-gonic/gin"
 	"github.com/xiaohubai/go-layout/configs/global"
 	_ "github.com/xiaohubai/go-layout/plugins"
-	"github.com/xiaohubai/go-layout/plugins/jaeger"
+	"github.com/xiaohubai/go-layout/plugins/tracing"
 	"github.com/xiaohubai/go-layout/router"
+
+	"github.com/fvbock/endless"
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	j := jaeger.Init()
-	defer j.Close()
+	tp := tracing.OpentelemetryInit()
+	defer tp.Shutdown(context.Background())
+
 	if err := HTTPServer(); err != nil {
 		log.Fatal(err)
 	}

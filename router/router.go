@@ -5,13 +5,14 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	v1 "github.com/xiaohubai/go-layout/api/v1"
 	m "github.com/xiaohubai/go-layout/middleware"
+	"go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin"
 )
 
 // Routers 初始化路由
 func Routers() *gin.Engine {
 	var router = gin.Default()
 
-	router.Use(m.Jaeger(), m.Metrics(), m.Recovery())
+	router.Use(otelgin.Middleware("router"), m.Request(), m.Metrics(), m.Recovery())
 	r0 := router.Group("")
 	{
 		r0.GET("/metrics", gin.WrapH(promhttp.Handler()))

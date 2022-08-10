@@ -1,22 +1,13 @@
 package middleware
 
 import (
-	"bytes"
-	"context"
-	"io/ioutil"
-	"time"
-
 	"github.com/gin-gonic/gin"
-
-	"github.com/xiaohubai/go-layout/configs/global"
-	"github.com/xiaohubai/go-layout/utils"
-
-	"go.uber.org/zap"
+	"go.opentelemetry.io/otel/trace"
 )
 
 func Request() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		start := time.Now()
+		/* start := time.Now()
 		path := c.Request.RequestURI
 		ip := c.ClientIP()
 		mothod := c.Request.Method
@@ -30,6 +21,11 @@ func Request() gin.HandlerFunc {
 
 		respBpdy, _ := c.Get("resp_body")
 		elapsed := time.Since(start)
-		global.Log.Info(uid, zap.Any("key", "resp"), zap.Duration("elapsed", elapsed), zap.Any("body", respBpdy))
+		global.Log.Info(uid, zap.Any("key", "resp"), zap.Duration("elapsed", elapsed), zap.Any("body", respBpdy)) */
+
+		spanContext := trace.SpanContextFromContext(c.Request.Context())
+		c.Set("X-Trace-ID", spanContext.TraceID().String())
+		c.Set("X-Span-ID", spanContext.SpanID().String())
+		c.Next()
 	}
 }

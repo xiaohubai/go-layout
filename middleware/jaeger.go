@@ -11,7 +11,7 @@ import (
 	"github.com/opentracing/opentracing-go/ext"
 )
 
-func Jaeger() gin.HandlerFunc {
+func Opentracing() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var newCtx context.Context
 		var span opentracing.Span
@@ -38,13 +38,13 @@ func Jaeger() gin.HandlerFunc {
 
 		var traceID string
 		var spanID string
-		var spanContext = span.Context()
-		switch spanContext.(type) {
+		switch span.Context().(type) {
 		case jaeger.SpanContext:
-			jaegerContext := spanContext.(jaeger.SpanContext)
+			jaegerContext := span.Context().(jaeger.SpanContext)
 			traceID = jaegerContext.TraceID().String()
 			spanID = jaegerContext.SpanID().String()
 		}
+
 		c.Set("X-Trace-ID", traceID)
 		c.Set("X-Span-ID", spanID)
 		c.Request = c.Request.WithContext(newCtx)

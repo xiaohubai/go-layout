@@ -4,12 +4,8 @@ import (
 	"fmt"
 
 	"github.com/gin-gonic/gin"
-	"github.com/opentracing/opentracing-go"
-	"github.com/opentracing/opentracing-go/log"
-	"go.uber.org/zap"
 
 	"github.com/xiaohubai/go-layout/configs/consts"
-	"github.com/xiaohubai/go-layout/configs/global"
 	"github.com/xiaohubai/go-layout/model"
 	"github.com/xiaohubai/go-layout/model/request"
 	"github.com/xiaohubai/go-layout/model/response"
@@ -39,7 +35,6 @@ func Register(c *gin.Context) {
 
 	err := service.Register(c, u)
 	if err != nil {
-		global.Log.Error(utils.TraceId(c), zap.Any("key", "func"), zap.Any("msg", fmt.Sprintf("%s:%s", "注册失败", err)))
 		response.Fail(c, response.RegisterFailed, err)
 		return
 	}
@@ -47,26 +42,19 @@ func Register(c *gin.Context) {
 }
 
 func Login(c *gin.Context) {
-	span, ctx := opentracing.StartSpanFromContext(c.Request.Context(), "api")
-	c.Request = c.Request.WithContext(opentracing.ContextWithSpan(ctx, span))
-	defer span.Finish()
-
 	metrics.CounterIncM("login")
 
 	var r request.LoginReq
 	if err := utils.ShouldBindJSON(c, &r); err != nil {
-		global.Log.Error(utils.TraceId(c), zap.Any("key", "func"), zap.Any("msg", fmt.Sprintf("%s:%s", "参数校验错误", err)))
 		response.Fail(c, response.ParamsFailed, err)
 		return
 	}
 	if !store.Verify(r.CaptchaID, r.Captcha, true) {
-		global.Log.Error(utils.TraceId(c), zap.Any("key", "func"), zap.Any("msg", "验证码校验失败"))
 		response.Fail(c, response.CaptchaVerifyFailed, nil)
 		return
 	}
 	u := &model.User{UserName: r.UserName, Password: r.Password}
 	if loginResp, err := service.Login(c, u); err != nil {
-		span.LogFields(log.Object("service.Login(c, u)", u), log.Object("error", err))
 		response.Fail(c, response.LoginFailed, err)
 	} else {
 		//登录成功后，将用户信息和token发送到kafka
@@ -82,7 +70,6 @@ func UserInfo(c *gin.Context) {
 		UID: claims.UID,
 	}
 	if userInfoResp, err := service.UserInfoList(c, u); err != nil {
-		global.Log.Error(utils.TraceId(c), zap.Any("key", "func"), zap.Any("msg", fmt.Sprintf("%s:%s", "获取用户信息失败", err)))
 		response.Fail(c, response.GetUserInfoFailed, err)
 	} else {
 		response.Ok(c, map[string]interface{}{"userInfo": userInfoResp[0]})
@@ -96,7 +83,6 @@ func UserInfoList(c *gin.Context) {
 		return
 	}
 	if userInfoResp, err := service.UserInfoList(c, &model.User{}); err != nil {
-		global.Log.Error(utils.TraceId(c), zap.Any("key", "func"), zap.Any("msg", fmt.Sprintf("%s:%s", "获取用户列表失败", err)))
 		response.Fail(c, response.GetUserInfoFailed, err)
 	} else {
 		response.Ok(c, userInfoResp)
@@ -107,7 +93,6 @@ func SetUserInfo(c *gin.Context) {
 	claims := c.MustGet("claims").(*model.Claims)
 	var r request.UserInfoReq
 	if err := utils.ShouldBindJSON(c, &r); err != nil {
-		global.Log.Error(utils.TraceId(c), zap.Any("key", "func"), zap.Any("msg", fmt.Sprintf("%s:%s", "参数校验错误", err)))
 		response.Fail(c, response.ParamsFailed, err)
 		return
 	}
@@ -126,7 +111,6 @@ func SetUserInfo(c *gin.Context) {
 		UpdatedUser: claims.UserName,
 	}
 	if err := service.SetUserInfo(c, u); err != nil {
-		global.Log.Error(utils.TraceId(c), zap.Any("key", "func"), zap.Any("msg", fmt.Sprintf("%s:%s", "设置用户信息失败", err)))
 		response.Fail(c, response.SetUserInfoFailed, err)
 	} else {
 		response.Ok(c, nil)
