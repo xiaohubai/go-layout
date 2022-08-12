@@ -34,17 +34,23 @@ func AddCasbin(c *gin.Context, r request.CasbinReq) error {
 }
 
 // GetCasbinList 获取全部权限路由列表
-func GetCasbinList(c *gin.Context, r request.CasbinListReq) (casbin []response.CasbinResp, err error) {
+func GetCasbinList(c *gin.Context, r request.CasbinListReq) (resp *response.PageResp, err error) {
 	t := model.CasbinRule{
 		Ptype: r.Ptype,
 		V0:    r.RoleID,
 		V1:    r.Path,
 		V2:    strings.ToUpper(r.Method),
 	}
-	casbins, err := dao.GetCasbinList(c, t)
+	pageInfo := response.PageInfo{
+		Page:     r.Page,
+		PageSize: r.PageSize,
+	}
+	casbins, total, err := dao.GetCasbinList(c, t, pageInfo)
 	if err != nil {
 		return nil, err
 	}
+
+	var casbin []response.CasbinResp
 	for _, v := range casbins {
 		data := response.CasbinResp{
 			ID:     v.ID,
@@ -53,6 +59,13 @@ func GetCasbinList(c *gin.Context, r request.CasbinListReq) (casbin []response.C
 			Method: v.V2,
 		}
 		casbin = append(casbin, data)
+	}
+
+	resp = &response.PageResp{
+		List:     casbin,
+		Total:    total,
+		Page:     r.Page,
+		PageSize: r.PageSize,
 	}
 	return
 }

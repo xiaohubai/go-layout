@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/xiaohubai/go-layout/model/request"
 	"github.com/xiaohubai/go-layout/model/response"
+	"github.com/xiaohubai/go-layout/plugins/metrics"
 	"github.com/xiaohubai/go-layout/service"
 	"github.com/xiaohubai/go-layout/utils"
 )
@@ -30,17 +31,17 @@ func GetCasbinList(c *gin.Context) {
 		response.Fail(c, response.NotAdminID, nil)
 		return
 	}
-
 	var r request.CasbinListReq
 	if err := utils.ShouldBindJSON(c, &r); err != nil {
 		response.Fail(c, response.ParamsFailed, err)
 		return
 	}
 
-	if casbinListResp, err := service.GetCasbinList(c, r); err != nil {
+	if resp, err := service.GetCasbinList(c, r); err != nil {
 		response.Fail(c, response.GetCasbinListFailed, nil)
 	} else {
-		response.Ok(c, casbinListResp)
+		metrics.Counter("GetCasbinList_suc").Inc()
+		response.Ok(c, resp)
 	}
 }
 

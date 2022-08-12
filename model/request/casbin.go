@@ -7,10 +7,12 @@ type CasbinReq struct {
 }
 
 type CasbinListReq struct {
-	Ptype  string `json:"ptype"`
-	RoleID string `json:"roleId"`
-	Path   string `json:"path"`
-	Method string `json:"method"`
+	Ptype    string `json:"ptype"`
+	RoleID   string `json:"roleId"`
+	Path     string `json:"path"`
+	Method   string `json:"method"`
+	Page     int    `json:"page"`
+	PageSize int    `json:"pageSize"`
 }
 
 type DelCasbinReq struct {

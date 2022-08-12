@@ -14,6 +14,17 @@ type Resp struct {
 	TraceId string      `json:"traceId"`
 }
 
+type PageResp struct {
+	List     interface{} `json:"list"`
+	Total    int64       `json:"total"`
+	Page     int         `json:"page"`
+	PageSize int         `json:"pageSize"`
+}
+type PageInfo struct {
+	Page     int `json:"page"`
+	PageSize int `json:"pageSize"`
+}
+
 const (
 	CommonOK            = 0    // 成功
 	CommonFailed        = 4000 // 系统内部错误

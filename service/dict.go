@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/gin-gonic/gin"
+	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	"github.com/xiaohubai/go-layout/configs/consts"
 	"github.com/xiaohubai/go-layout/configs/global"
@@ -21,6 +22,9 @@ func GetDictList(c *gin.Context) (map[string]interface{}, error) {
 		context.Background(),
 		grpc.WithEndpoint(r.Endpoint),
 		grpc.WithDiscovery(d),
+		grpc.WithMiddleware(
+			tracing.Client(),
+		),
 	)
 	if err != nil {
 		return nil, fmt.Errorf("请求服务发现失败")

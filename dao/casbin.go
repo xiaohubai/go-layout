@@ -3,6 +3,7 @@ package dao
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/xiaohubai/go-layout/model"
+	"github.com/xiaohubai/go-layout/model/response"
 	"gorm.io/gorm"
 )
 
@@ -32,8 +33,11 @@ func CasbinList(c *gin.Context, t model.CasbinRule) (casbins []model.CasbinRule,
 	err = db.Find(&casbins).Error
 	return
 }
-func GetCasbinList(c *gin.Context, t model.CasbinRule) (casbins []model.CasbinRule, err error) {
-	db := GetDB(c, "mysql").(*gorm.DB)
+func GetCasbinList(c *gin.Context, t model.CasbinRule, pageInfo response.PageInfo) (casbins []model.CasbinRule, total int64, err error) {
+	limit := pageInfo.PageSize
+	offset := pageInfo.PageSize * (pageInfo.Page - 1)
+
+	db := GetDB(c, "mysql").(*gorm.DB).Model(&model.CasbinRule{})
 	if len(t.Ptype) != 0 {
 		db = db.Where("ptype = ?", t.Ptype)
 	}
@@ -46,8 +50,11 @@ func GetCasbinList(c *gin.Context, t model.CasbinRule) (casbins []model.CasbinRu
 	if len(t.V2) != 0 {
 		db = db.Where("v2 = ?", t.V2)
 	}
-
-	err = db.Find(&casbins).Error
+	err = db.Count(&total).Error
+	if err != nil {
+		return
+	}
+	err = db.Limit(limit).Offset(offset).Order("id desc").Find(&casbins).Error
 	return
 }
 

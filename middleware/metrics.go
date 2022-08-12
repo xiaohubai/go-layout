@@ -10,7 +10,7 @@ func Metrics() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		metrics.PathCounter.With(prometheus.Labels{
 			"method": c.Request.Method,
-			"path":   c.Request.RequestURI,
+			"url":    c.Request.RequestURI,
 		}).Inc()
 
 		c.Next()

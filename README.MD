@@ -53,6 +53,8 @@
 - api接口:      172.21.0.2:8888
 - jaeger:       172.21.0.2:16686
 - consul:       172.21.0.2:8500
+- prometheus    172.21.0.2:9090
+- grafana       172.21.0.2:3000 （admin admin）
 
 ## 主要功能
 - gin web框架 （github.com/gin-gonic/gin）

@@ -59,6 +59,10 @@ services:
     environment:
       - TZ=Asia/Shanghai
   #### grafana ####
+  ## grafana重设密码
+  ## docker exec --user 472 -it grafana /bin/bash
+  ## cd /usr/share/grafana/bin
+  ## ./grafana-cli admin reset-admin-password admin
   grafana:
     image: grafana/grafana
     container_name: grafana

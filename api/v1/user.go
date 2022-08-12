@@ -10,7 +10,6 @@ import (
 	"github.com/xiaohubai/go-layout/model/request"
 	"github.com/xiaohubai/go-layout/model/response"
 	"github.com/xiaohubai/go-layout/plugins/kafka"
-	"github.com/xiaohubai/go-layout/plugins/metrics"
 	"github.com/xiaohubai/go-layout/service"
 	"github.com/xiaohubai/go-layout/utils"
 )
@@ -42,8 +41,6 @@ func Register(c *gin.Context) {
 }
 
 func Login(c *gin.Context) {
-	metrics.CounterIncM("login")
-
 	var r request.LoginReq
 	if err := utils.ShouldBindJSON(c, &r); err != nil {
 		response.Fail(c, response.ParamsFailed, err)
